@@ -10,8 +10,8 @@ import HR.Employee.*;
 public class App {
 	// It's a constant that defines the maximum number of inputs that the user can do.
 	static Scanner input = new Scanner(System.in);
-	// It's a constant that defines the maximum number of inputs that the user can
-	// do.
+	
+	// It's a constant that defines the maximum number of inputs that the user can do.
 	static final int MAX_INPUTS = 10;
 
 	/**
