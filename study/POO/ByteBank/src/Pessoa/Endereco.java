@@ -1,5 +1,5 @@
 
-package Cliente;
+package Pessoa;
 
 /**
  * Class Endereco
@@ -15,6 +15,29 @@ public class Endereco {
 	private String cidade; /* < Cidade de residência do cliente */
 	private String uf; /* < UF de residência do cliente */
 	private String cep; /* < CEP do endereço do cliente */
+
+	public Endereco(String logradouro, String bairro, String numero, String cidade, String uf, String cep) {
+		this.logradouro = logradouro;
+		this.bairro = bairro;
+		this.numero = numero;
+		this.cidade = cidade;
+		this.uf = uf;
+		this.cep = cep;
+	}
+
+	/**
+	 * Construtor Cópia para a classe Endereço
+	 * 
+	 * @param endereco Endereço a ser copiado
+	 */
+	public Endereco(Endereco endereco) {
+		this.logradouro = endereco.getLogradouro();
+		this.bairro = endereco.getBairro();
+		this.numero = endereco.getNumero();
+		this.cidade = endereco.getCidade();
+		this.uf = endereco.getUf();
+		this.cep = endereco.getCep();
+	}
 
 	/**
 	 * Getter para o logradouro

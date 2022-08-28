@@ -1,11 +1,13 @@
 package Conta;
 
-import Cliente.Cliente;
+import Pessoa.Pessoa;
+import Pessoa.Cliente.Cliente;
 
-public class Conta {
+public abstract class Conta {
 
-	private static int contadorContas; /*<Contador para a quantidade de contas criadas */
-	private Cliente titular;
+	private static int contadorContas; /* <Contador para a quantidade de contas criadas */
+
+	private Pessoa titular;
 	private int agencia;
 	private int numConta;
 	private double saldo;
@@ -17,6 +19,12 @@ public class Conta {
 		Conta.contadorContas++;
 	}
 
+	public Conta(int agencia, int numConta) {
+		this.agencia = agencia;
+		this.numConta = numConta;
+		Conta.contadorContas++;
+	}
+
 	/**
 	 * Construtor Parametrizado para a classe Conta
 	 * 
@@ -25,25 +33,36 @@ public class Conta {
 	 * @param numConta Número da Conta
 	 * @param saldo    Saldo da conta corrente
 	 */
-	public Conta(Cliente titular, int agencia, int numConta, double saldo) {
+	public Conta(Pessoa titular, int agencia, int numConta, double saldo) {
 		Conta.contadorContas++;
-		this.titular = titular;
 		this.agencia = agencia;
 		this.numConta = numConta;
 		this.saldo = saldo;
+		this.titular = titular;
+
+	}
+
+	public static int getContadorContas() {
+		return contadorContas;
+	}
+
+	public static void setContadorContas(int contadorContas) {
+		Conta.contadorContas = contadorContas;
 	}
 
 	/**
 	 * Getter para o titutar da conta
+	 * 
 	 * @return O titular da conta
 	 */
-	public Cliente getTitular() {
+	public Pessoa getTitular() {
 		return titular;
 	}
 
 	/**
 	 * Setter sem parâmetros para o atributo titular;
-	 * Ao setar um novo titular sem parâmetros, criamos uma nova instância da classe
+	 * Ao setar um novo titular sem parâmetros, criamos uma nova instância da
+	 * classe
 	 * Cliente para o atributo padrão titular;
 	 */
 	public void setTitular() {
@@ -52,19 +71,20 @@ public class Conta {
 
 	/**
 	 * Setter do titular parametrizado;
-	 * Ao setar um novo titular tendo um cliente como parâmetro, deve-se previamente
+	 * Ao setar um novo titular tendo um cliente como parâmetro, deve-se
+	 * previamente
 	 * ter criado uma nova instância da classe Cliente
 	 * para então repassar seus atributos como referência para o titular da conta.
-	 * 
+	 *
 	 * @param titular
 	 */
-	public void setTitular(Cliente titular) {
+	public void setTitular(Pessoa titular) {
 		this.titular = titular;
 	}
 
-
 	/**
 	 * Getter para o saldo da conta
+	 * 
 	 * @return Saldo da conta
 	 */
 	public double getSaldo() {
@@ -73,6 +93,7 @@ public class Conta {
 
 	/**
 	 * Setter para alterar o saldo da conta
+	 * 
 	 * @param saldo
 	 */
 	public void setSaldo(double saldo) {
@@ -81,6 +102,7 @@ public class Conta {
 
 	/**
 	 * Getter para o número da agência da conta
+	 * 
 	 * @return O número da conta
 	 */
 	public int getAgencia() {
@@ -89,6 +111,7 @@ public class Conta {
 
 	/**
 	 * Setter para o número da agência
+	 * 
 	 * @param agencia Número da agência
 	 */
 	public void setAgencia(int agencia) {
@@ -97,6 +120,7 @@ public class Conta {
 
 	/**
 	 * Getter para o número da conta
+	 * 
 	 * @return O número da conta
 	 */
 	public int getNumConta() {
@@ -105,6 +129,7 @@ public class Conta {
 
 	/**
 	 * Setter para o número da conta
+	 * 
 	 * @param numConta O número da conta
 	 */
 	public void setNumConta(int numConta) {
@@ -112,10 +137,11 @@ public class Conta {
 	}
 
 	/**
-	 * Imprime um extrato básico com informações como nome do titular e saldo atual.
+	 * Imprime um extrato básico com informações como nome do titular e saldo
+	 * atual.
 	 */
 	public void extrato() {
-		if (this.titular == null) {
+		if (this.titular.getNome() == null) {
 			System.out.println("Não é possível aferir saldo de uma conta sem titular válido");
 		} else {
 			System.out.println("Titular: " + titular.getNome());
@@ -127,42 +153,39 @@ public class Conta {
 	}
 
 	/**
-	 * Deposita um valor recebido por parâmetro como saldo da conta (this)
-	 * @param valor Valor a ser depositado
+	 * 
+	 * @param valor
+	 * @return
 	 */
-	public void deposita(double valor) {
+	public boolean deposita(double valor) {
 		if (valor > 0) {
 			this.saldo += valor;
-			System.out.println("R$" + valor + " depositado!");
+			return true;
 		} else {
-			System.out.println("'" + valor + "' não é uma quantia válida para depósito");
+			return false;
 		}
 	}
 
 	/**
-	 * Realiza um saque na conta (this) 
-	 * @param valor Valor do saque
+	 * 
+	 * @param valor
+	 * @return
 	 */
-	public void saca(double valor) {
-		if (valor <= this.saldo) {
-			this.saldo -= valor;
-			System.out.println("Saque realizado com sucesso!");
-		} else {
-			System.out.println("Saldo insuficiente para saque no valor de R$" + valor + "!");
-		}
-	}
+	public abstract boolean saca(double valor);
 
 	/**
-	 * Transfere determinado valor da conta de origem (this) para uma conta de destino
-	 * @param valor Valor a ser transferido
-	 * @param destino Conta de destino para receber o valor da transferência
+	 * 
+	 * @param valor
+	 * @param destino
+	 * @return
 	 */
-	public void transfere(double valor, Conta destino) {
-		if (valor <= this.saldo) {
-			this.saca(valor);
-			destino.deposita(valor);
+	public boolean transfere(double valor, Conta destino) {
+		if (this.saca(valor)) { // Se o retorno da função saca for igual a 'true', é porque o saque foi bem
+								// sucedido, logo
+			destino.deposita(valor); // Basta depositar o valor na conta de destino para concluir a operação
+			return true;
 		} else {
-			System.out.println("Saldo insuficiente para transferência no valor de R$" + valor + "!");
+			return false;
 		}
 	}
 
