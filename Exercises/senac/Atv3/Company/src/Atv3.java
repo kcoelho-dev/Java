@@ -7,7 +7,7 @@ import HR.Employee.*;
  * @author Kelvin Coelho
  * @date 2022/08/22
  */
-public class App {
+public class Atv3 {
 	// It's a constant that defines the maximum number of inputs that the user can do.
 	static Scanner input = new Scanner(System.in);
 	
